@@ -1,7 +1,7 @@
 # backend-challenge
 Shopify Developer Intern Challenge Question
 
-**Technologies: ** 
+**Technologies:**
 Python, HTML, CSS & Flask
 
 **How to Launch:**
