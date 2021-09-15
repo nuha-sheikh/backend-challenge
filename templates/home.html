@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        h1, h3, p, a{
+            font-family: sans-serif;
+        }
+        a:link{
+            text-decoration: none;
+        }
+        body {
+            padding:0;
+            margin:0;
+        }
+        .header{
+            padding: 20px;
+            text-align: center;
+            background: #6A8D48;
+            color: white;
+            font-size: 20px;
+        }
+        .main-content{
+            text-align: center;
+            padding: 10px;
+        }
+        .imgBox
+        {
+            max-width: 30%;
+            height: auto;
+            padding: 10px;
+        }
+        .imgBox:hover
+        {
+        -moz-box-shadow: 0 0 10px #ccc;
+        -webkit-box-shadow: 0 0 10px #ccc;
+        box-shadow: 0 0 10px #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+            <h1>Shopify Image Repository 2021 ✨</h1>
+            <a href="/">Home</a>
+    </div>
+    
+    <div class="main-content">
+        <h3>Click image for details</h3>
+        <div>
+            {% for image in database %}
+            <a href="/img/{{image['path']}}"><img class="imgBox" src="{{url_for('static', filename = 'images/' + image.path)}}"></a>
+            {% endfor %}
+        </div>
+        <div>
+            <h3>Filter by tags</h3>
+            {% for tag in tags %}
+                <a href="/tags/{{tag}}">#{{tag}}</a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        h1, h3, p, a{
+            font-family: sans-serif;
+        }
+        a:link{
+            text-decoration: none;
+        }
+        body {
+            padding:0;
+            margin:0;
+        }
+        .header{
+            padding: 20px;
+            text-align: center;
+            background: #6A8D48;
+            color: white;
+            font-size: 20px;
+        }
+        .main-content{
+            text-align: center;
+            padding: 10px;
+        }
+        img
+        {
+            max-width: 50%;
+            height: auto;
+            padding: 10px;
+        }
+        .imgBox
+        {
+            max-width: 30%;
+            height: auto;
+            padding: 10px;
+        }
+        .imgBox:hover
+        {
+        -moz-box-shadow: 0 0 10px #ccc;
+        -webkit-box-shadow: 0 0 10px #ccc;
+        box-shadow: 0 0 10px #ccc;
+        }
+        .footer{
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+            <h1>Shopify Image Repository 2021 ✨</h1>
+            <a href="/">Home</a>
+    </div>
+    
+    <div class="main-content">
+        <div>
+            <h3>{{image['title']}}</h3>
+            <img src="{{url_for('static', filename = 'images/' + image.path)}}">
+            <p>{{image['caption']}}</p>
+        </div>
+        <div class="footer">
+            <h3>View Similar Images</h3>
+            {% for path in image['similar'] %}
+            <a href="/img/{{path}}"><img class="imgBox" src="{{url_for('static', filename = 'images/' + path)}}"></a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
