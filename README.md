@@ -1,7 +1,9 @@
 # backend-challenge
 Shopify Developer Intern Challenge Question
+
 **Technologies: ** 
 Python, HTML, CSS & Flask
+
 **How to Launch:**
 1. pip install virtualenv
 2. virtualenv venv (Python 3.9.7)
