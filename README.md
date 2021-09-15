@@ -1,5 +1,5 @@
 # backend-challenge
-Shopify Developer Intern Challenge Question
+Shopify Developer Intern Challenge Question 💻
 
 **Technologies:**
 Python, HTML, CSS & Flask
@@ -11,3 +11,6 @@ Python, HTML, CSS & Flask
 4. pip install -r requirements.txt
 5. python app.py 
 6. Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+**Prompt:**
+https://docs.google.com/document/d/1eg3sJTOwtyFhDopKedRD6142CFkDfWp1QvRKXNTPIOc/edit
