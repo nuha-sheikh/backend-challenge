@@ -1,80 +1,67 @@
-import re
-import os
-from flask import Flask, render_template, redirect
+import ssl
+from pymongo import MongoClient
+from image import Image
+from flask import Flask, render_template, request
+from bson.json_util import dumps
 
 app = Flask(__name__)
+ 
+#Database Configeration
+cluster = "mongodb+srv://nsheikh:k4L504qXqRbIMsvH@cluster0.kt5nm.mongodb.net/repository?retryWrites=true&w=majority"
+client = MongoClient(cluster, ssl_cert_reqs=ssl.CERT_NONE)
+db = client.repository
+collection = db.images
 
-tags = ['trees', 'pink', 'sky', 'green', 'flowers', 'white', 'lake', 'blue']
+#Routes
 
-images_tag = []
-
-database = [
-    {
-        "title" : "Cherry Blossom Tree",
-        "caption" : "Pink Cherry Blossom Tree in the Meadow",
-        "id" : 0,
-        "path" : "tree-1.jpg",
-        "characteristics": ['trees', 'pink', 'sky', 'blue'],
-        "similar": ['tree-2.jpg']
-    }, 
-    {
-        "title" : "Large Green Tree",
-        "caption" : "Large Green Tree in the Meadow",
-        "id" : 1,
-        "path" : "tree-2.jpg",
-        "characteristics": ['trees', 'green', 'sky', 'blue'],
-        "similar": ['tree-1.jpg']
-    },
-    {
-        "title" : "Pink Flower",
-        "caption" : "Pink Flower Sprouting",
-        "id" : 2,
-        "path" : "flower-1.jpg",
-        "characteristics": ['flowers', 'pink', 'green'],
-        "similar": ['flower-2.jpg']
-    },
-    {
-        "title" : "Daisy Flower",
-        "caption" : "A Bunch of Daisies",
-        "id" : 3,
-        "path" : "flower-2.jpg",
-        "characteristics": ['flowers', 'white', 'green'],
-        "similar": ['flower-1.jpg']
-    },
-    {
-        "title" : "Lake Louise",
-        "caption" : "Lake Louise, Alberta",
-        "id" : 4,
-        "path" : "lake-1.jpg",
-        "characteristics": ['blue', 'lake', 'trees', 'sky'],
-        "similar": ['lake-2.jpg']
-    },
-    {
-        "title" : "Lake with an Island",
-        "caption" : "Large Blue Lake with an Island",
-        "id" : 5,
-        "path" : "lake-2.jpg",
-        "characteristics": ['blue', 'lake', 'trees', 'sky'],
-        "similar": ['lake-1.jpg']
-    }
-]
-
-@app.route('/')
+#Home: view all images within database
+@app.route('/', methods=['GET'])
 def home():
-    return render_template('home.html', database=database, tags=tags)
+    images = Image.get_images(collection)
+    result = struct_images(images)
+    return render_home(result)
 
-@app.route('/tags/<tag>')
-def display_tag(tag):
-    images_tag = []
-    for image in database:
-        if str(tag) in image['characteristics']: images_tag.append(image)
-    if images_tag: return render_template('home.html', database=images_tag, tags=tags)
-    return redirect('/')
+#Search: search for images by their title, category, caption
+@app.route('/search', methods=['POST'])
+def search():
+    parameter = request.form['parameter']
+    images = Image.search(collection, parameter)
+    result = struct_images(images)
+    return render_home(result)
 
-@app.route('/img/<path>')
-def display_image(path):
-    for image in database:
-        if str(path) == image['path']: return render_template('display-image.html', image=image)
-    return redirect('/')
+#Select Image: view image details, view similar images 
+@app.route('/img/<id>', methods=['GET'])
+def get_image(id):
+    image = Image.get_image(collection, id)
+    single_image = struct_images(image)
+    
+    similar_images = get_similar_images(image)
+    
+    if single_image[0] in similar_images: similar_images.remove(single_image[0])
+    return render_image(single_image, similar_images)
 
-app.run()
+def get_similar_images(image):
+    categories = image["categories"]
+    
+    dup_arr = []
+    for category in categories:
+        dup_arr += Image.struct_images( Image.search(collection, category) )
+    
+    arr = list(map(list, set(map(tuple, dup_arr))))
+    return arr
+
+#Structure images for template
+def struct_images(images):
+    result = Image.struct_images(images)
+    return result
+
+#Render "Home" template
+def render_home(result):
+    return render_template("home.html", images=result)
+
+#Render "Image" template
+def render_image(image, similar_images):
+    return render_template("image.html", image=image, images=similar_images)
+
+if __name__ == '__main__':
+	app.run()

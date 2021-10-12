@@ -6,13 +6,17 @@
 }
 
 body {
-  margin: 0px;
+  margin: 0;
   font-family: Arial;
 }
 
 .header {
   text-align: center;
   padding: 32px;
+}
+
+.h3 {
+    padding: 50px;
 }
 
 .row {
@@ -173,7 +177,6 @@ body{
     border: 1px solid #ccc;  
   }
 }
-
 div.margin {
   margin-bottom: 5%;
 }
@@ -182,22 +185,33 @@ div.margin {
 
 <!-- Header -->
 <div class="header">
-  <h1>✨ Shopify Image Repository 2021 ✨</h1>
-  <p>Search for images! Click on images for more detail!</p>
-  <div class="topnav">
-    <a class="active" href="/">Home</a>
-    <div class="search-container">
-        <form id="form" action="/search" method="post" > 
-            <input type="text" placeholder="Search for an image..." name="parameter">
-            <button>Search</button>
-        </form>
+    <h1>✨ Shopify Image Repository 2021 ✨</h1>
+    <p>Search for images! Click on images for more detail!</p>
+    <div class="topnav">
+      <a class="active" href="/">Home</a>
+      <div class="search-container">
+          <form id="form" action="/search" method="post" > 
+              <input type="text" placeholder="Search for an image..." name="parameter">
+              <button>Search</button>
+          </form>
+      </div>
     </div>
-  </div>
-
+  
 </div>
 
-
 <!-- Photo Grid -->
+<div class="row" style="align-items: center;"> 
+    {% for img in image %}
+    <div class="column">
+      <div class="test">
+          <a href="/img/{{img[3]}}"><img src="{{img[0]}}" style="width:100%"></a>
+          <h3>{{img[1]}}</h3>
+          <p>{{img[2]}}</p>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
 <div class="row"> 
   {% for img in images %}
   <div class="column">
