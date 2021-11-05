@@ -1,5 +1,5 @@
 # backend-challenge
-Shopify Developer Intern Challenge Question 💻
+Image Respository Challenge 💻
 
 **Technologies:**
 Python (Flask), MongoDB, HTML & CSS
@@ -11,6 +11,3 @@ Python (Flask), MongoDB, HTML & CSS
 -> Run python3 app.py 
 
 -> In your broswer navigate to http://127.0.0.1:5000/
-
-**Prompt:**
-https://docs.google.com/document/d/1eg3sJTOwtyFhDopKedRD6142CFkDfWp1QvRKXNTPIOc/edit
